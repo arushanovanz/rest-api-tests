@@ -1,10 +1,11 @@
-#intelliJ
+#intelliJ 
 .idea
 #target-files
 .target
 # Compiled class file
 *.class
 
+#text-text
 # Log file
 *.log
 
