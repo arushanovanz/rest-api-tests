@@ -199,4 +199,20 @@ public class CrudTests {
                 .extract().asString();
         System.out.println(body);
     }
+    @Test
+    public void getBodyJsonPath(){
+        String key = "91862a20f9msh633e027463600f2p1ca3edjsn9e88f1e2dd14";
+        RestAssured.config = config().logConfig(logConfig().enableLoggingOfRequestAndResponseIfValidationFails(LogDetail.ALL));
+        requestSpecification = new RequestSpecBuilder()
+                .setBaseUri("https://omgvamp-hearthstone-v1.p.rapidapi.com/")
+                .setAccept(ContentType.JSON)
+                .addHeader("x-rapidapi-host", "omgvamp-hearthstone-v1.p.rapidapi.com")
+                .addHeader("x-rapidapi-key", "91862a20f9msh633e027463600f2p1ca3edjsn9e88f1e2dd14")
+                .build();
+      String tittle = given().get(EndPoint.CARDSET,"Classic")
+                .getBody()
+                .jsonPath()
+                .get("cards[0].dbfid"); //не работает, возвращает объект null
+        System.out.println(tittle);
+    }
 }
