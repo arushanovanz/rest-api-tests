@@ -3,12 +3,14 @@ package restassuredTests;
 import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.builder.ResponseSpecBuilder;
+import io.restassured.config.SSLConfig;
 import io.restassured.filter.log.LogDetail;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.Test;
 
 
 import java.sql.SQLOutput;
+import java.util.Map;
 
 import static io.restassured.RestAssured.*;
 import static io.restassured.RestAssured.responseSpecification;
@@ -214,5 +216,34 @@ public class CrudTests {
                 .jsonPath()
                 .get("cards[0].dbfid"); //не работает, возвращает объект null
         System.out.println(tittle);
+    }
+
+    @Test
+    public void getCoolies () {
+        String key = "91862a20f9msh633e027463600f2p1ca3edjsn9e88f1e2dd14";
+        //RestAssured.config = config().logConfig(logConfig().enableLoggingOfRequestAndResponseIfValidationFails(LogDetail.ALL));
+        RestAssured.config().sslConfig(SSLConfig.sslConfig().relaxedHTTPSValidation());// если просрочен сертификат у сайта
+        requestSpecification = new RequestSpecBuilder()
+                .setBaseUri("https://omgvamp-hearthstone-v1.p.rapidapi.com/")
+                .setAccept(ContentType.JSON)
+                .addHeader("x-rapidapi-host", "omgvamp-hearthstone-v1.p.rapidapi.com")
+                .addHeader("x-rapidapi-key", "91862a20f9msh633e027463600f2p1ca3edjsn9e88f1e2dd14")
+                .build();
+        Map<String, String> cookies = given()
+                .get(EndPoint.CARDSET,"Blackrock Mountain")
+                .then()
+                .statusCode(200)
+                .extract().cookies();
+        String sessionId = given()
+                .auth()
+                .basic("arushanovanz","31337asdf")
+                .get(EndPoint.CARD,"Ysera")
+                .then()
+                .statusCode(200)
+                .extract()
+                .sessionId();
+
+        System.out.println(sessionId);
+        System.out.println(cookies);
     }
 }
