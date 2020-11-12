@@ -21,8 +21,9 @@ public class PojoTests {
                 .addHeader("x-rapidapi-host", "omgvamp-hearthstone-v1.p.rapidapi.com")
                 .addHeader("x-rapidapi-key", "91862a20f9msh633e027463600f2p1ca3edjsn9e88f1e2dd14")
                 .build();
-      Cards card = given().contentType(ContentType.JSON).log().all().pathParam("name","EX1_572")
+
+        Cards card = given().contentType(ContentType.JSON).log().all().pathParam("name","EX1_572")
                             .get(EndPoint.CARD).jsonPath().getObject("cards[0]",Cards.class);
-        System.out.println(card);
+        System.out.println(card);// возвращает null
     }
 }
